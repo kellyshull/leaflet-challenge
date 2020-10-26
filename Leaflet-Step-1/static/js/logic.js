@@ -7,12 +7,18 @@ d3.json(queryURL).then(data => {
     createFeatures(data.features);
 });
 
+
+
+
+
 function createFeatures(earthquakeData) {
+
+
     // Define a function we want to run once for each feature in the features array
     // Give each feature a popup describing the place and mag of the earthquake
     function onEachFeature(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.title +
-            "</h3><hr><p>" + feature.properties.mag + "</p><hr>" + "<p>" + feature.geometry.coordinates[2] + "</p>");
+            "</h3><hr><p>" + "Magnitute: " + feature.properties.mag + "</p><hr>" + "<p>" + "Depth: " + feature.geometry.coordinates[2] + "</p>");
     }
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
@@ -22,6 +28,23 @@ function createFeatures(earthquakeData) {
         pointToLayer: pointToLayer,
         style: style
     });
+
+    // var color = "";
+    // if (feature.properties.mag > 5) {
+    //     color = "red";
+    // }
+    // else if (feature.properties.mag > 4) {
+    //     color = "orange";
+    // }
+    // else if (feature.properties.mag > 3) {
+    //     color = "yellow";
+    // }
+    // else if (feature.properties.mag > 2){
+    //     color = "green"
+    // }
+    // else {
+    //     color = "white";
+    // }
 
     function pointToLayer(geoJsonPoint, latlng) {
         return L.circleMarker(latlng);
@@ -75,5 +98,5 @@ function createMap(earthquakes) {
 
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
-      }).addTo(myMap); 
+    }).addTo(myMap);
 }
