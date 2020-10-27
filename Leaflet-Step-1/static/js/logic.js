@@ -18,7 +18,7 @@ function createFeatures(earthquakeData) {
     // Give each feature a popup describing the place and mag of the earthquake
     function onEachFeature(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.title +
-            "</h3><hr><p>" + "Magnitute: " + feature.properties.mag + "</p><hr>" + "<p>" + "Depth: " + feature.geometry.coordinates[2] + "</p>");
+            "</h3><hr><p>" + "Magnitude: " + feature.properties.mag + "</p><hr>" + "<p>" + "Depth: " + feature.geometry.coordinates[2] + "</p>");
     }
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
@@ -29,25 +29,10 @@ function createFeatures(earthquakeData) {
         style: style
     });
 
-    // var color = "";
-    // if (feature.properties.mag > 5) {
-    //     color = "red";
-    // }
-    // else if (feature.properties.mag > 4) {
-    //     color = "orange";
-    // }
-    // else if (feature.properties.mag > 3) {
-    //     color = "yellow";
-    // }
-    // else if (feature.properties.mag > 2){
-    //     color = "green"
-    // }
-    // else {
-    //     color = "white";
-    // }
-
-    function pointToLayer(geoJsonPoint, latlng) {
-        return L.circleMarker(latlng);
+    function pointToLayer(feature, latlng) {
+        return new L.circle(latlng,
+            {fillColor: colorCircle(feature.properties.mag),
+            radius: myRadius(feature.properties.mag)});
     }
 
     function style(quakeFeatures) {
@@ -99,4 +84,32 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
+}
+
+// put color function outside of the other functions
+function colorCircle(magnitude) {
+    if (magnitude > 5) {
+        return "red"
+    }
+    else if (magnitude > 4) {
+        return "orange"
+    }
+    else if (magnitude > 3) {
+        return "yellow"
+    }
+    else if (magnitude > 2) {
+        return "lightgreen"
+    }
+    else if (magnitude > 1) {
+        return "green"
+    }
+    else {
+        return "white";
+    }
+};
+
+// radius function
+
+function myRadius(magnitude) {
+    return magnitude*20000;
 }
